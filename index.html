@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telka v kapse</title>
+<meta name="description" content="Ovladač Google TV a Android TV v mobilu: touchpad, psaní, Google Asistent a hledání rovnou v aplikacích.">
+<link rel="icon" href="obrazky/logo.png">
+<style>
+  :root { --bg:#0e1118; --panel:#181c26; --text:#f6f0e2; --tlum:#a3a9b8; --oranz:#ff9a3c; }
+  :root[data-theme="light"] { --bg:#faf7f1; --panel:#efe8da; --text:#1b1f2a; --tlum:#5f6675; --oranz:#c25b1c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .pruh { height:8px; background:linear-gradient(#e8742a 0 75%, #5c3c27 75%); }
+  main { max-width:960px; margin:0 auto; padding:40px 16px 64px; }
+  header { display:flex; gap:24px; align-items:center; flex-wrap:wrap; }
+  header img { width:120px; height:120px; }
+  h1 { font-size:44px; line-height:1.1; margin:0; }
+  .pod { color:var(--oranz); font-size:21px; margin:6px 0 0; }
+  .ozn { display:block; width:100%; max-width:500px; margin:18px auto 30px; }
+  .ozn.kan { max-width:340px; border-radius:18px; }
+  .slogan { font-size:17px; margin:8px 0 0; opacity:.85; }
+  .karty { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px; margin:36px 0; }
+  .karta { background:var(--panel); border-radius:16px; padding:16px 18px; }
+  .karta b { display:block; color:var(--oranz); margin-bottom:4px; }
+  .snimky { display:flex; gap:14px; overflow-x:auto; padding-bottom:8px; scroll-snap-type:x mandatory; }
+  /* vystředění; při přetečení na úzkém displeji se pořád dá posouvat od začátku */
+  .snimky img:first-child { margin-left:auto; }
+  .snimky img:last-child { margin-right:auto; }
+  .snimky img { width:230px; height:auto; border-radius:14px; flex:0 0 auto; scroll-snap-align:start; }
+  .pozn { background:var(--panel); border-left:4px solid var(--oranz); border-radius:12px; padding:14px 18px; margin:0 0 36px; }
+  .pozn b { color:var(--oranz); }
+  .napajeni { border-left-color:#ffcc33; }
+  .napajeni p { margin:8px 0; }
+  .napajeni .cesta { background:var(--bg); border-radius:10px; padding:10px 14px; font-size:16px; }
+  .napajeni .cesta span, .napajeni .mala { color:var(--tlum); font-size:14px; }
+  .napajeni table { width:100%; border-collapse:collapse; margin:10px 0 4px; font-size:15px; }
+  .napajeni th, .napajeni td { text-align:left; padding:6px 8px; border-bottom:1px solid rgba(128,128,128,.25); }
+  .napajeni .ano { color:#4cd08a; font-weight:600; } .napajeni .ne { color:#ff6b6b; font-weight:600; }
+
+  .novinky { background:var(--panel); border-radius:16px; padding:6px 18px 14px; margin:30px 0 0; }
+  .novinky h2 { margin:14px 0 6px; }
+  .novinky .den { color:var(--oranz); font-weight:600; font-size:15px; margin:12px 0 2px; }
+  .novinky ul { margin:0; }
+  .novinky li { margin:2px 0; }
+  .ziskat { border-left-color:#4cd08a; }
+  h2 { font-size:24px; margin:40px 0 10px; }
+  ul { padding-left:22px; margin:0; }
+  footer { margin-top:48px; color:var(--tlum); font-size:14px; }
+  a { color:var(--oranz); }
+</style>
+</head>
+<body>
+<div class="pruh"></div>
+<main>
+  <header>
+    <img src="obrazky/logo.png" alt="Telka v kapse">
+    <div>
+      <h1>Telka v kapse</h1>
+      <p class="pod">Ovladač televize v mobilu pro Google TV a Android TV</p>
+      <p class="slogan">Zařídí mnohem víc než originální ovladač od televize.</p>
+    </div>
+  </header>
+
+  <section class="novinky" id="novinky">
+    <h2>Novinky</h2>
+    <p class="den">24. 11. 2026 · verze 0.68</p>
+    <ul>
+      <li><b>Uspořádej si obrazovku podle sebe</b> – v menu televize posuneš jednotlivé části nahoru i dolů a co nepotřebuješ,
+        skryješ. Třeba aplikace úplně nahoru a hlasitost pryč, když zvuk řídí soundbar.</li>
+      <li><b>Moje aplikace</b> – vybereš si, které aplikace chceš mít po ruce na hlavní obrazovce.</li>
+      <li>Přes tlačítka teď jde normálně posouvat obrazovka – tlačítko se stiskne až po puštění prstu.</li>
+      <li>„Ťukni a mluv“ umí i <b>podržet, mluvit a pustit</b>.</li>
+    </ul>
+    <p class="den">24. 11. 2026 · verze 0.65–0.67</p>
+    <ul>
+      <li><b>Jak na to</b> – nová nápověda (tlačítko <b>?</b> nahoře) s popisem všech tlačítek a tipy.</li>
+      <li><b>Začínáme</b> – krátký průvodce pro první spuštění.</li>
+      <li><b>Větší ovladač</b> – v menu televize zvětšíš celou Telku: písmo, tlačítka i touchpad.</li>
+      <li><b>Barevná tlačítka</b> pro teletext a HbbTV – zapneš je v Kanálech.</li>
+    </ul>
+    <p class="den">23. 11. 2026</p>
+    <ul>
+      <li><b>Telka je na Google Play</b> – zatím v uzavřeném testu pro Česko a Slovensko.</li>
+      <li>Upřesněná spotřeba ve spánku podle skutečných měření (viz níže „Důležité“).</li>
+    </ul>
+  </section>
+
+  <div class="pozn ziskat" style="margin-top:18px"><b>Jak Telku získat?</b> Telka je teď v testování na Google Play.
+    Chceš se přidat mezi testery? Napiš na <a href="mailto:telka.v.kapse@gmail.com">telka.v.kapse@gmail.com</a>
+    a pošli Gmail, se kterým se přihlašuješ do Obchodu Play – pošlu ti odkaz. Pro všechny bude Telka k mání brzy.</div>
+
+  <div class="karty">
+    <div class="karta"><b>Touchpad nebo šipky</b>Přejedeš prstem a výběr na televizi se posune. Ťuknutí funguje jako tlačítko OK.</div>
+    <div class="karta"><b>Mluv k televizi</b>Ťukneš a řekneš, co chceš. Google Asistent v televizi to vyhledá nebo udělá – stejně jako s mikrofonem originálního ovladače. Naplno v angličtině, česky zatím jen jednoduché hledání.</div>
+    <div class="karta"><b>Psaní z mobilu</b>Do jakéhokoli políčka na televizi píšeš klávesnicí mobilu nebo diktuješ. Žádné šipkování po písmenkách.</div>
+    <div class="karta"><b>Hledání odkudkoli</b>Napíšeš název a Telka ho vyhledá rovnou v YouTube, SmartTube nebo Stremiu – ať je televize zrovna na jakékoli obrazovce.</div>
+    <div class="karta"><b>Spouštění aplikací</b>YouTube, Netflix, Stremio, SmartTube a další otevřeš na televizi jedním ťuknutím v mobilu. Své oblíbené si dáš na hlavní obrazovku.</div>
+    <div class="karta"><b>Hlasitost</b>Ovládáš ji tlačítky v aplikaci nebo bočními tlačítky telefonu. Aplikace ukazuje, jak nahlas televize právě hraje.</div>
+    <div class="karta"><b>Makra</b>Jedno ťuknutí zapne televizi, otevře aplikaci a rovnou v ní vyhledá – třeba „Večer“: YouTube a pohádky. A „Dobrou noc“ televizi vypne.</div>
+    <div class="karta"><b>Ovladač v oznámení</b>Hlasitost, ztlumení a pauza přímo z lišty oznámení – i na zamčené obrazovce, bez otevírání aplikace. Zapneš ho dlaždicí „Telka“ v rychlém nastavení.</div>
+    <div class="karta"><b>Kanály jako na ovladači</b>Číselník pro klasické vysílání: čísla s potvrzením OK, kanál +/−, předchozí kanál, info o pořadu, seznam kanálů, titulky i hlasitost. Pro teletext a HbbTV i barevná tlačítka. Kdo ho nepotřebuje, v menu ho skryje.</div>
+    <div class="karta"><b>Co je na televizi</b>Telka ukáže, která aplikace na televizi zrovna běží – a když to aplikace prozradí, i název videa a čas.</div>
+    <div class="karta"><b>Zapnutí z mobilu</b>Telka televizi zapne, i když hluboce spí (přes Google Cast nebo Wake-on-LAN). Podržením tlačítka vypnutí nabídne televize vypnutí nebo restart. <b>Pozor na režim napájení – viz níže.</b></div>
+    <div class="karta"><b>Spolehlivé spojení</b>Když domácí síť zakolísá, Telka se během chvilky sama připojí znovu a žádné stisknutí se neztratí.</div>
+    <div class="karta"><b>Podle sebe</b>Pořadí částí obrazovky si upravíš a co nepotřebuješ, skryješ. K tomu Větší ovladač pro lepší čitelnost a vlastní výběr aplikací.</div>
+    <div class="karta"><b>Nápověda v aplikaci</b>Tlačítko <b>?</b> ukáže, co dělá které tlačítko, a poradí, když se televize nenajde.</div>
+    <div class="karta"><b>Bez reklam a účtů</b>Žádné sledování. Telka mluví jen s tvou televizí v domácí síti.</div>
+    <div class="karta"><b>Bezpečně</b>Spojení s televizí je šifrované a Telka si při každém připojení ověří, že mluví opravdu s tvou televizí. Kdyby se za ni v síti vydávalo jiné zařízení, nic mu nepošle.</div>
+  </div>
+
+  <div class="pozn"><b>Netflix, Disney+, HBO Max a spol.</b> – aplikace největších streamovacích gigantů si hlídají
+    vlastní pravidla, takže v nich ovládání pojede lehce omezeně. Spustíš je, šipky, touchpad, přehrávání i hlasitost
+    fungují normálně. Mají ale vlastní klávesnici na obrazovce, kam psaní z mobilu nedosáhne, a hledání z Telky do nich
+    neskočí. Hledat v nich proto nejlíp hlasem – <b>Ťukni a mluv</b> a Asistent v televizi to najde.</div>
+
+  <div class="snimky">
+    <img src="obrazky/snimek-1.jpg" alt="Touchpad v mobilu">
+    <img src="obrazky/snimek-2.jpg" alt="Šipky a všechna tlačítka">
+    <img src="obrazky/snimek-3.jpg" alt="Mluv, piš a hledej">
+  </div>
+
+  <h2>Ovladač v oznámení</h2>
+  <p>Hlasitost, ztlumení a pauza rovnou z lišty oznámení – i na zamčené obrazovce, bez otevírání aplikace.
+    Zapneš ho dlaždicí <b>Telka</b> v rychlém nastavení (nebo v aplikaci v menu televize).</p>
+  <img class="ozn" src="obrazky/ovladac-v-oznameni.png" alt="Ovladač Telky v liště oznámení a dlaždice Telka v rychlém nastavení">
+
+  <h2>Kanály jako na ovladači</h2>
+  <p>Pro ty, kdo koukají na anténu, kabel nebo IPTV s čísly kanálů. Ťukneš na <b>123</b> vedle touchpadu, vyťukáš číslo
+    a <b>OK</b> přepne hned – bez čekání. <b>Předchozí</b> tě vrátí na kanál, kde jsi byl před tím, a nahoře vidíš, co právě píšeš.
+    Boční tlačítka hlasitosti telefonu fungují i tady.</p>
+  <img class="ozn kan" src="obrazky/kanaly.jpg" alt="Číselník kanálů v Telce">
+
+  <div class="pozn"><b>Google Asistent a čeština</b> – Telka předá tvůj hlas Asistentovi v televizi a ten pak
+    rozhoduje, co umí. <b>Česky</b> zvládne jen jednoduché hledání (název filmu, videa, herce); příkazy jako spuštění
+    aplikace nebo ovládání televize nefungují – stejně jako s originálním ovladačem. <b>Anglicky</b> umí všechno:
+    „Open Netflix“, „Play Matrix on YouTube“, „Volume up“, „What's the weather?“. Stačí přepnout jazyk televize
+    v Nastavení → Systém → Jazyk na English.</div>
+
+  <div class="pozn napajeni"><b>⚡ Důležité: aby šla televize zapnout z mobilu</b>
+    <p>Ve spánku se televize může úplně odpojit ze sítě – a pak ji nevzbudí nic, ani Telka. Rozhoduje energetický režim v televizi:</p>
+    <p class="cesta">Nastavení → Systém → Napájení a energie → Energetický režim<br>
+      <span>(anglicky Energy mode: Increased = Zvýšený, Optimized = Optimalizovaný)</span></p>
+    <table>
+      <tr><th></th><th>Zvýšený</th><th>Optimalizovaný</th></tr>
+      <tr><td>Televize na <b>kabelu</b></td><td class="ano">✓ zapne</td><td class="ne">✗ nezapne</td></tr>
+      <tr><td>Televize na <b>Wi-Fi</b></td><td class="ano">✓ zapne</td><td class="ano">✓ zapne (o chvilku pomaleji)</td></tr>
+    </table>
+    <p><b>Doporučení:</b> televize na <b>Wi-Fi</b> → nech <b>Optimalizovaný</b>, Telka ji zapne a ve spánku skoro nic nebere.
+      Televize na <b>kabelu</b> → je potřeba <b>Zvýšený</b>.</p>
+    <p><b>Kolik to stojí?</b> Ve spánku v režimu <b>Optimalizovaný</b> bere televize obvykle pod <b>1 W</b> – pár desítek korun za rok.
+      V režimu <b>Zvýšený</b> zůstává vzhůru víc věcí (síť, Cast, rychlý start) a televize bere obvykle kolem <b>10 W</b>
+      (podle modelu zhruba 5–20 W). Při ceně elektřiny 6 Kč/kWh to dělá asi <b>1,40 Kč denně, kolem 500 Kč za rok</b>.</p>
+    <p><b>Pro srovnání – při sledování:</b> běžná televize (55–65″) bere orientačně <b>70–150 W</b>, s HDR obrazem i víc.
+      Hodina sledování tak stojí asi <b>0,40–1,80 Kč</b>.</p>
+    <p class="mala">Uvedené hodnoty jsou průměrné, přesná spotřeba záleží na modelu a velikosti – najdeš ji v energetickém štítku a návodu své televize (databáze EPREL). Ověřeno na televizích TCL s Google TV;
+      u jiných značek se názvy v nastavení můžou mírně lišit (třeba „Pohotovostní režim → Bez obrazovky“).</p>
+  </div>
+
+  <h2>Soukromí a bezpečnost</h2>
+  <ul>
+    <li><b>Žádný internet navíc</b> – Telka mluví jen s televizí v tvé domácí síti. Žádné účty, reklamy, statistiky ani sledování.</li>
+    <li><b>Šifrované spojení</b> – stisky, psaní i hlas jdou do televize šifrovaně, stejně jako u originální aplikace Google TV.</li>
+    <li><b>Spárování kódem</b> – mobil se s televizí spojí jen po opsání kódu z obrazovky. Bez něj televizi nikdo cizí neovládne.</li>
+    <li><b>Ověřená televize</b> – Telka si při spárování zapamatuje „otisk“ televize a při každém připojení ho zkontroluje. Kdyby se za televizi vydávalo jiné zařízení v síti, nic mu nepošle a upozorní tě.</li>
+    <li><b>Mikrofon jen na ťuknutí</b> – nahrává se, jen když ťukneš na „Ťukni a mluv“, a zvuk jde rovnou do televize.</li>
+  </ul>
+  <p style="color:var(--tlum)">Neprůstřelné není nic, ale pro ovladač v domácí síti je to víc než dost.</p>
+
+  <h2>Co potřebuješ</h2>
+  <ul>
+    <li>Televizi nebo krabičku s <b>Google TV nebo Android TV</b> – TCL, Sony, Philips, Hisense, Xiaomi, Chromecast s Google TV a další</li>
+    <li>V televizi službu <b>Android TV Remote Service</b> ve verzi 5 nebo novější – verzi najdeš v televizi v Nastavení → Aplikace, aktualizace jde přes Obchod Play (nové televize ji mají vždy)</li>
+    <li>Mobil s Androidem 8 nebo novějším</li>
+    <li>Mobil a televizi ve stejné domácí síti (jedno klidně na Wi-Fi, druhé na kabelu)</li>
+    <li>Pro mluvení k televizi zapnutého Google Asistenta (ne režim „pouze aplikace“)</li>
+  </ul>
+  <p style="color:var(--tlum)">Televize Samsung (Tizen) a LG (webOS) zatím podporované nejsou.</p>
+
+  <footer>
+    <p><a href="soukromi.html">Zásady ochrany soukromí / Privacy policy</a> · <a href="podminky.html">Podmínky použití / Terms of use</a> · Kontakt: <a href="mailto:telka.v.kapse@gmail.com">telka.v.kapse@gmail.com</a></p>
+    <p>Telka v kapse je nezávislá aplikace, není produktem společnosti Google. Google TV, Android TV a Google Cast jsou ochranné známky společnosti Google LLC.</p>
+  </footer>
+</main>
+</body>
+</html>
